@@ -41,8 +41,8 @@ data. The output identifies candidate status, not suitability or validation.
 | provenance and source rights | Retained in referenced V3 record and original raw files |
 
 Core schema base:
-`https://raw.githubusercontent.com/FulongLi/AIPE-Core/v0.1.0/schemas/`.
-The tag is a logical version identifier until published. To validate an assembled
+`https://raw.githubusercontent.com/AIPE-Labs/AIPE-Core/v0.1.0/schemas/`
+(AIPE-Core release v0.1.0). To validate an assembled
 state, use the complete local AIPE-Core checkout's `scripts/validate.py` offline.
 No schema fetch or Core package dependency is added to the database runtime.
 Do not append a proposal twice; Core entity IDs must remain unique.
@@ -51,6 +51,7 @@ For a cross-repository check of every canonical record, install the trusted Core
 checkout's `requirements-dev.txt` into the test environment, then run
 `python scripts/check_core_integration.py ../AIPE-Core`. This imports that local
 validator, validates all projections together, and writes no device/design data.
+CI runs this check against a checkout of the AIPE-Core `v0.1.0` tag.
 
 ## Evidence and rights
 
@@ -60,8 +61,8 @@ operating conditions, source locators, raw artifact checksums, interpolation and
 derived recipe lineage remain in V3. A later quantitative adapter must preserve
 these conditions explicitly and reject ambiguous rating names/units.
 
-See [LICENSING](../LICENSING.md): existing code has unresolved blanket rights and
-manufacturer data retains its own notices. `license: NOASSERTION` is intentional.
+See [LICENSING](../LICENSING.md): the code is MIT (`license: MIT` in `aipe.yaml`);
+manufacturer data retains its own notices and its redistribution rights are not established.
 Public data availability alone does not authorize redistribution. Historical
 `transistordatabase` and `PowerElectronicsDeviceLibrary` remain migration/reference
 sources; this integration neither deletes them nor reimports their data.

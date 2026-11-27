@@ -17,3 +17,8 @@ jobs:
       - run: pytest -q
       - run: python examples/device_explorer_demo.py
       - run: python -m build
+      - name: Check Core projections against AIPE-Core v0.1.0
+        run: |
+          git clone --depth 1 --branch v0.1.0 https://github.com/AIPE-Labs/AIPE-Core.git ../AIPE-Core
+          python -m pip install -r ../AIPE-Core/requirements-dev.txt
+          python scripts/check_core_integration.py ../AIPE-Core

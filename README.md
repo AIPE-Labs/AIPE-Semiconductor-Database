@@ -59,9 +59,11 @@ commands are described in [docs/usage.md](docs/usage.md).
   result)
 - Developer: Fulong Li
 - Organisation: Spirit Connect / AIPE Labs
-- License: not declared. No repository licence has been selected (`aipe.yaml`: `NOASSERTION`;
-  `pyproject.toml` ships [LICENSING.md](LICENSING.md) instead of an SPDX identifier). Manufacturer data in
-  `data/raw/` keeps Wolfspeed's rights; LICENSING.md covers code, data and historical-contribution rights.
+- License: code [MIT](LICENSE). Manufacturer data in `data/raw/`, and the records derived from it, keep
+  Wolfspeed's rights; their redistribution and commercial-use rights are not established and nothing is
+  relicensed. AIPE's own data layer is CC BY 4.0 to the extent AIPE holds rights. See
+  [LICENSING.md](LICENSING.md).
+- Repository: <https://github.com/AIPE-Labs/AIPE-Semiconductor-Database>
 
 ## Documentation
 

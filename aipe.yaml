@@ -9,8 +9,8 @@
   "description": "Canonical V3 power semiconductor records with SI curves, source rights, evidence lineage, a conservative Core candidate adapter, DAB switch loss evaluation on actual waveform stress, evidence-tiered device screening, datasheet candidate import and prioritised measurement requests.",
   "status": "active",
   "maturity": "usable",
-  "repository": "https://github.com/FulongLi/AIPE-Semiconductor-Database",
-  "license": "NOASSERTION",
+  "repository": "https://github.com/AIPE-Labs/AIPE-Semiconductor-Database",
+  "license": "MIT",
   "capabilities": [
     "semiconductor-data",
     "semiconductor-query",
@@ -46,7 +46,7 @@
     {
       "name": "core-candidate",
       "description": "Candidate identity and source evidence for Engineering State 0.1.0.",
-      "schema": "https://raw.githubusercontent.com/FulongLi/AIPE-Core/v0.1.0/schemas/semiconductor.schema.json"
+      "schema": "https://raw.githubusercontent.com/AIPE-Labs/AIPE-Core/v0.1.0/schemas/semiconductor.schema.json"
     },
     {
       "name": "dab-loss-evaluation",
@@ -169,7 +169,7 @@
     "limitations": [
       "Identity/source mapping only; detailed ratings and curves stay in V3 records.",
       "Manufacturer model data is not converted into measured evidence.",
-      "Existing code and data rights remain NOASSERTION; see LICENSING.md.",
+      "Code is MIT; redistribution and commercial-use rights in the manufacturer data are not established (LICENSING.md).",
       "DAB losses derive from manufacturer PLECS tensors and datasheet points; ZVS turn-on loss is zero by assumption without Coss/Eoss evidence.",
       "Candidate device records are unreviewed datasheet transcriptions and are not canonical evidence."
     ]

@@ -7,7 +7,10 @@ name = "aipe-devices"
 version = "3.1.0"
 description = "Canonical power semiconductor data and evidence infrastructure"
 readme = "README.md"
-license-files = ["LICENSING.md"]
+# Code: MIT (LICENSE). The wheel bundles no dataset; data rights are described in LICENSING.md.
+license = "MIT"
+license-files = ["LICENSE", "LICENSING.md"]
+authors = [{ name = "Fulong Li" }, { name = "AIPE Semiconductor Database contributors" }]
 requires-python = ">=3.10"
 dependencies = ["pydantic>=2.10,<3"]
 
@@ -28,6 +31,11 @@ dev = [
 
 [project.scripts]
 aipe-devices = "aipe_devices.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/AIPE-Labs/AIPE-Semiconductor-Database"
+Repository = "https://github.com/AIPE-Labs/AIPE-Semiconductor-Database"
+Changelog = "https://github.com/AIPE-Labs/AIPE-Semiconductor-Database/blob/main/CHANGELOG.md"
 
 [tool.setuptools.packages.find]
 where = ["src"]
