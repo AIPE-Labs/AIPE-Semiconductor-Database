@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AIPE Semiconductor Data Explorer</title>
+  <meta name="description" content="Read-only explorer for the AIPE Semiconductor Database: power semiconductor device records with unit, operating conditions, source and rights status for every value.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+  <a class="skip" href="#app">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#/" aria-label="AIPE Semiconductor Data Explorer, overview">
+        <img class="brand-logo" src="assets/aipe-logo.svg" alt="AIPE" width="84" height="30">
+        <span class="brand-text">Semiconductor Data Explorer</span>
+      </a>
+      <nav class="site-nav" aria-label="Sections">
+        <a href="#/" data-nav="overview">Overview</a>
+        <a href="#/devices" data-nav="devices">Devices</a>
+        <a href="#/sources" data-nav="sources">Sources and rights</a>
+      </nav>
+      <a class="btn-pill header-cta" href="https://aipel.co.uk/hub/data/">AIPE Hub</a>
+    </div>
+  </header>
+  <main id="app" tabindex="-1">
+    <noscript><p class="notice">This explorer needs JavaScript. The records are also available as JSON in the
+      <a href="https://github.com/AIPE-Labs/AIPE-Semiconductor-Database">repository</a>.</p></noscript>
+    <p class="loading">Loading…</p>
+  </main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="assets/aipe-logo.svg" alt="AIPE" width="70" height="25">
+        <p>Read-only view of the AIPE Semiconductor Database. Manufacturer data keep their owners' rights; their
+          redistribution rights are not established. No record has been reviewed by a person.</p>
+        <p class="small" id="build-info"></p>
+      </div>
+      <div class="footer-col">
+        <h2>Explorer</h2>
+        <a href="#/devices">Devices</a>
+        <a href="#/sources">Sources and rights</a>
+      </div>
+      <div class="footer-col">
+        <h2>Database</h2>
+        <a href="https://github.com/AIPE-Labs/AIPE-Semiconductor-Database">GitHub repository</a>
+        <a href="https://github.com/AIPE-Labs/AIPE-Semiconductor-Database/blob/main/docs/agents.md">MCP server and plugins</a>
+        <a href="https://github.com/AIPE-Labs/AIPE-Semiconductor-Database/blob/main/LICENSING.md">Licensing and data rights</a>
+        <a href="https://github.com/AIPE-Labs/AIPE-Semiconductor-Database/issues">Report a problem or request removal</a>
+      </div>
+      <div class="footer-col">
+        <h2>AIPE</h2>
+        <a href="https://aipel.co.uk/">aipel.co.uk</a>
+        <a href="https://aipel.co.uk/hub/data/">Data &amp; Models</a>
+        <a href="https://aipe-labs.github.io/AIPE-Magnetics-Database/">Magnetics Data Explorer</a>
+      </div>
+    </div>
+    <p class="footer-legal">AIPE Labs, Spirit Connect Ltd.</p>
+  </footer>
+  <script src="assets/plot.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

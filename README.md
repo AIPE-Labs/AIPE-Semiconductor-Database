@@ -87,7 +87,7 @@ commands are described in [docs/usage.md](docs/usage.md).
 
 ## Documentation
 
-- [Agents: MCP server, plugins and skill](docs/agents.md)
+- [Agents: MCP server, plugins and skill](docs/agents.md) · [Data Explorer (static site)](site/README.md)
 - [Usage: query, export, import, migration, measurement packages, Device Explorer, DAB losses](docs/usage.md)
 - [Limitations and roadmap](docs/limitations.md)
 - [Architecture and invariants](docs/architecture.md) · [Core integration](docs/core-integration.md)

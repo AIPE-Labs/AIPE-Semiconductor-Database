@@ -10,6 +10,11 @@
   `get_device`, `get_values` and `provenance`. Every value carries unit, stated conditions, data class, source and
   rights status. Claude Code and Codex plugins with the `semiconductor-data-lookup` skill.
 
+- Entry point for people: a static, read-only Data Explorer (`site/`, `scripts/build_site.py`) with an overview, a
+  device list, device pages with charts of the stored grid points, and a sources-and-rights page. Every device page
+  states the source of the data and that its redistribution rights are not established. The GitHub Pages workflow
+  is manual only.
+
 ## 3.1.0 — DAB loss evaluation, screening and measurement requests
 
 - Python 3.10 support: `StrEnum` backport in `schema/enums.py`, `requires-python >= 3.10`,

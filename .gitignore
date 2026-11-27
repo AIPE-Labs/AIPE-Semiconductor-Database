@@ -10,3 +10,4 @@ dist/
 data/derived/*
 !data/derived/README.md
 data/artifacts/
+_site/

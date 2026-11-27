@@ -367,6 +367,18 @@ class Database:
             ],
         }
 
+    def export_device(self, device: str) -> dict:
+        """``get_device`` plus every record in full (curve grids included), for static publication."""
+        collection, data = self._get(device)
+        out = self.get_device(data["device_id"])
+        out["records"] = []
+        for group, kind, record in self._records(data):
+            described = self._describe(collection, data, group, kind, record)
+            if kind == "curve":
+                described["values"] = record["values"]
+            out["records"].append(described)
+        return out
+
     def _record(self, device: str, record_id: str) -> tuple[str, dict, str, str, dict]:
         collection, data = self._get(device)
         for group, kind, record in self._records(data):
