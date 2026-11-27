@@ -1,0 +1,29 @@
+{
+  "name": "aipe-semiconductor-database",
+  "version": "3.1.0",
+  "description": "Power semiconductor data expert: device model tables and datasheet transcriptions with unit, conditions, source and rights status, served read-only by the aipe-devices Python package through its local MCP server.",
+  "author": {
+    "name": "Fulong Li",
+    "url": "https://github.com/AIPE-Labs/AIPE-Semiconductor-Database"
+  },
+  "homepage": "https://github.com/AIPE-Labs/AIPE-Semiconductor-Database",
+  "repository": "https://github.com/AIPE-Labs/AIPE-Semiconductor-Database",
+  "license": "MIT",
+  "keywords": ["power-semiconductors", "power-electronics", "sic", "mosfet", "dataset", "mcp"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "AIPE Semiconductor Database",
+    "shortDescription": "Power semiconductor device data with provenance and rights status",
+    "longDescription": "Read-only access to power semiconductor device records (domain schema 3.0.0, SI units): manufacturer model tables for conduction, switching loss and thermal networks, and unreviewed datasheet transcriptions, with unit, operating conditions, source, data class and rights status for every value. Requires a clone of the repository installed with pip install -e '.[mcp]'; the data are not bundled into the package.",
+    "developerName": "AIPE (AI for Power Engineering)",
+    "category": "Engineering",
+    "capabilities": ["Read"],
+    "websiteURL": "https://github.com/AIPE-Labs/AIPE-Semiconductor-Database",
+    "defaultPrompt": [
+      "What turn-on energy does the Wolfspeed C3M0040120K model give at 800 V and 25 degC?",
+      "Which 1200 V SiC devices are in the database, and where does their data come from?",
+      "Show the provenance and rights status of the C2M0025120D conduction table"
+    ]
+  }
+}

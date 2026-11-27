@@ -49,6 +49,26 @@ aipe-devices validate-package examples/measurement_package/manifest.json
 pytest -q
 ```
 
+### For AI agents (Claude Code, Codex, any MCP client)
+
+A local, read-only MCP server gives agents the same records. Every value it returns carries its unit, the
+operating conditions the source stated, its data class (manufacturer model, datasheet transcription or
+measurement), its source and its rights status. The data are not bundled into the package, so work from a
+clone:
+
+```sh
+git clone https://github.com/AIPE-Labs/AIPE-Semiconductor-Database.git
+cd AIPE-Semiconductor-Database
+python -m pip install -e '.[mcp]'
+aipe-devices-mcp --self-test
+
+claude plugin marketplace add AIPE-Labs/AIPE-Semiconductor-Database
+claude plugin install aipe-semiconductor-database@aipe-semiconductor-database
+```
+
+Codex uses `codex plugin marketplace add` and `codex plugin add` with the same names. Tools, result fields and
+setup are described in [docs/agents.md](docs/agents.md).
+
 Export, PLECS import, legacy migration, library import, the Device Explorer and the DAB loss-evaluation
 commands are described in [docs/usage.md](docs/usage.md).
 
@@ -67,6 +87,7 @@ commands are described in [docs/usage.md](docs/usage.md).
 
 ## Documentation
 
+- [Agents: MCP server, plugins and skill](docs/agents.md)
 - [Usage: query, export, import, migration, measurement packages, Device Explorer, DAB losses](docs/usage.md)
 - [Limitations and roadmap](docs/limitations.md)
 - [Architecture and invariants](docs/architecture.md) · [Core integration](docs/core-integration.md)

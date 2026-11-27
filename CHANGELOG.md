@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- MIT `LICENSE` for the code, declared in `pyproject.toml` and `aipe.yaml`; `LICENSING.md` rewritten (code MIT,
+  manufacturer data rights not established and not relicensed, AIPE's own data layer CC BY 4.0). Repository and
+  AIPE-Core schema addresses point at `AIPE-Labs`; CI checks all Core projections against AIPE-Core `v0.1.0`.
+- Entry point for agents: `aipe_devices.api.Database` (read-only queries) and a local stdio MCP server
+  (`aipe-devices-mcp`, extra `mcp`) with the tools `database_summary`, `list_sources`, `list_devices`,
+  `get_device`, `get_values` and `provenance`. Every value carries unit, stated conditions, data class, source and
+  rights status. Claude Code and Codex plugins with the `semiconductor-data-lookup` skill.
+
 ## 3.1.0 — DAB loss evaluation, screening and measurement requests
 
 - Python 3.10 support: `StrEnum` backport in `schema/enums.py`, `requires-python >= 3.10`,
