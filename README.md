@@ -90,7 +90,8 @@ commands are described in [docs/usage.md](docs/usage.md).
 - [Agents: MCP server, plugins and skill](docs/agents.md) · [Data Explorer (static site)](site/README.md)
 - [Usage: query, export, import, migration, measurement packages, Device Explorer, DAB losses](docs/usage.md)
 - [Limitations and roadmap](docs/limitations.md)
-- [Architecture and invariants](docs/architecture.md) · [Core integration](docs/core-integration.md)
+- [Architecture and invariants](docs/architecture.md) · [Core integration](docs/core-integration.md) ·
+  [Conventions compared with Core and the magnetics schema](docs/conventions-comparison.md)
 - [DAB loss evaluation and screening](docs/dab-loss-screening.md) ·
   [Phase-2 library import and Explorer](docs/phase2.md) ·
   [Measurement partner interface](docs/measurement.md) · [Migration](docs/migration.md)
