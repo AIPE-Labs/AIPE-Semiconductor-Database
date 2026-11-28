@@ -253,6 +253,7 @@
       "tests/integration/test_dab_cli.py",
       "tests/integration/test_dab_examples.py",
       "tests/integration/test_agent_entry_point.py",
+      "tests/integration/test_build_site.py",
       ".github/workflows/tests.yml"
     ],
     "limitations": [
@@ -269,6 +270,7 @@
     "docs/core-integration.md",
     "docs/architecture.md",
     "docs/agents.md",
+    "site/README.md",
     "LICENSING.md",
     "data/candidates/README.md"
   ]

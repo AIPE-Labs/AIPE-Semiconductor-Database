@@ -1,0 +1,46 @@
+name: Data Explorer (GitHub Pages)
+# Builds the read-only explorer from the committed records and deploys it to
+# https://aipe-labs.github.io/AIPE-Semiconductor-Database/.
+# Manual only: publishing makes manufacturer-derived values, whose redistribution rights are not
+# established, more visible than they are in the repository. The repository owner decides each run.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install the package
+        run: python -m pip install --upgrade pip && python -m pip install -e .
+      - name: Build the site and its JSON files
+        run: python scripts/build_site.py --out _site
+      - name: Records are unchanged
+        run: test -z "$(git status --porcelain -- data src)"
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
