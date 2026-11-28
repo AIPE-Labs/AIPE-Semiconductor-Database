@@ -1,5 +1,8 @@
 # Measurement partner interface
 
+Voluntary contributions use this package format with a declaration of contributor, rights and licence added:
+see [CONTRIBUTING.md](../CONTRIBUTING.md).
+
 MeasurementRequest describes device/sample, independent `TestPlanItem` entries,
 and intended rights. Each item owns its protocol, fixed conditions, compact sweep
 axes, requested metrics, repetitions, notes and requirements. This package does not contact

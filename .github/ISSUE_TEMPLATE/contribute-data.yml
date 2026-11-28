@@ -1,0 +1,96 @@
+name: Contribute measured device data
+description: Offer data you have measured (or, as a manufacturer, your own data). No git needed - give us a link to an archived deposit.
+title: "Data contribution: <manufacturer> <part number>"
+labels: ["data-contribution"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Upload your files to an archive that gives them a DOI first (for example [Zenodo](https://zenodo.org/), free), then fill in this form.
+        A maintainer turns the deposit into a data package, and you are asked to confirm it before it is merged.
+        Leave anything you do not know empty: missing values stay missing, they are never filled in.
+  - type: input
+    id: contributor
+    attributes:
+      label: Your name and organisation
+      placeholder: "Dr A. Example, Example University, Power Electronics Laboratory"
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: You are contributing as
+      options: [university, manufacturer, company, laboratory, individual]
+    validations:
+      required: true
+  - type: input
+    id: contact
+    attributes:
+      label: Public contact (optional)
+      description: ORCID, GitHub handle or e-mail. It is published with the data.
+  - type: input
+    id: doi
+    attributes:
+      label: DOI link of the deposit
+      description: Must start with https://doi.org/ . Links to personal web pages or cloud drives cannot be accepted, because such files disappear.
+      placeholder: "https://doi.org/10.5281/zenodo.1234567"
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device
+      description: Manufacturer and exact part number.
+      placeholder: "Wolfspeed C3M0040120K"
+    validations:
+      required: true
+  - type: textarea
+    id: samples
+    attributes:
+      label: Samples
+      description: How many samples, their identifiers, lot or date code if known. Write "not known" where it applies.
+      placeholder: "3 samples (S1-S3), date code 2431, lot not known"
+    validations:
+      required: true
+  - type: textarea
+    id: measurements
+    attributes:
+      label: What was measured, and at which conditions
+      description: Quantities (for example Eon, Eoff, RDS(on), Coss) and the conditions of every value - junction or case temperature, bus voltage, current, gate voltages, gate resistances.
+    validations:
+      required: true
+  - type: textarea
+    id: setup
+    attributes:
+      label: Test setup and instruments
+      description: Method (double-pulse test, curve tracer, ...), board or fixture, oscilloscope and probes with model names, load inductance, how the energies were calculated, calibration if known.
+    validations:
+      required: true
+  - type: textarea
+    id: uncertainty
+    attributes:
+      label: Uncertainty (optional)
+      description: Repetitions, standard deviation or an estimate, if you have one.
+  - type: dropdown
+    id: licence
+    attributes:
+      label: Licence you release the data under
+      description: CC BY 4.0 requires users to credit you. CC0 waives all rights.
+      options: ["CC-BY-4.0", "CC0-1.0"]
+      default: 0
+    validations:
+      required: true
+  - type: input
+    id: attribution
+    attributes:
+      label: How you want to be credited (required for CC BY 4.0)
+      placeholder: "Example University Power Electronics Laboratory, C3M0040120K double-pulse data, 2026"
+  - type: checkboxes
+    id: rights
+    attributes:
+      label: Right to share
+      options:
+        - label: "I have the right to share these data and I release them under the licence named in this contribution."
+          required: true
+        - label: "The deposit contains the original files as they came from the instruments or my processing, and I agree that a copy is archived with the database."
+          required: true

@@ -6,7 +6,7 @@ description: Retrieve power semiconductor device data (SiC/Si MOSFET, IGBT, GaN,
 # Semiconductor data lookup
 
 You have the AIPE Semiconductor Database as MCP tools (`database_summary`, `list_sources`, `list_devices`,
-`get_device`, `get_values`, `provenance`). Every number you report must come from those calls.
+`get_device`, `get_values`, `provenance`, `list_contributions`, `get_contribution`). Every number you report must come from those calls.
 
 ## Rules
 
@@ -27,7 +27,11 @@ You have the AIPE Semiconductor Database as MCP tools (`database_summary`, `list
    quality flags such as `manufacturer_model_not_measurement`, `candidate_not_canonical` and `absent:...`.
 6. **Collections.** `canonical` records come from manufacturer model files archived in the repository.
    `candidate` records are unreviewed datasheet transcriptions; never treat them as canonical evidence.
-7. **No modelling.** `get_values` returns stored grid points. Do not interpolate between them, extrapolate
+7. **Contributed data.** Data from `list_contributions` / `get_contribution` are a class of their own. Always
+   give their `contribution_status`: `validated` means only that automatic checks pass, `reviewed` means a named
+   maintainer looked at it. Never call contributed data reviewed unless the status says so. They carry an open
+   licence (`rights.status: open_licence`); credit CC BY data with `rights.attribution`.
+8. **No modelling.** `get_values` returns stored grid points. Do not interpolate between them, extrapolate
    beyond them or compute losses. Model tables contain guard points outside the operating range; rows at or
    above 773.15 K are left out unless you ask for them. A missing value stays missing.
 

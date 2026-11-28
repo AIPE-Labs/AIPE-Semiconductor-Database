@@ -149,6 +149,8 @@ def test_mcp_self_test_lists_read_only_tools():
         "get_device",
         "get_values",
         "provenance",
+        "list_contributions",
+        "get_contribution",
     ]
 
 

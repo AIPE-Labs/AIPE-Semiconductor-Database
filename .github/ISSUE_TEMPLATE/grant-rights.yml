@@ -1,0 +1,47 @@
+name: Grant or clarify rights for data already in the database
+description: For rights holders (for example a manufacturer) - state under which terms your data may be kept and redistributed, or ask for correction or removal.
+title: "Data rights: <owner>"
+labels: ["data-rights"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The database marks manufacturer data as "rights not established" until the owner says otherwise.
+        Use this form to state the terms, or to ask for a correction or removal. See [LICENSING.md](https://github.com/AIPE-Labs/AIPE-Semiconductor-Database/blob/main/LICENSING.md).
+  - type: input
+    id: owner
+    attributes:
+      label: Rights holder and your role
+      placeholder: "Example Semiconductor Inc.; applications engineering manager"
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Which data
+      description: Files, part numbers or "all data of <manufacturer> in this repository".
+    validations:
+      required: true
+  - type: dropdown
+    id: request
+    attributes:
+      label: What you ask for
+      options:
+        - Permission to keep and redistribute under CC BY 4.0
+        - Permission to keep and redistribute under CC0
+        - Permission under other terms (describe below)
+        - Correction of values
+        - Removal
+    validations:
+      required: true
+  - type: textarea
+    id: terms
+    attributes:
+      label: Terms, required notice or details
+  - type: checkboxes
+    id: authority
+    attributes:
+      label: Authority
+      options:
+        - label: "I am authorised to make this statement for the rights holder."
+          required: true

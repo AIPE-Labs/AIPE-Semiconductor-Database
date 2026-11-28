@@ -2,3 +2,5 @@
 data/raw/** -text
 examples/measurement_package/waveforms/** -text
 examples/import/*.csv -text whitespace=cr-at-eol
+examples/contribution/**/original/** -text
+data/contributed/** -text

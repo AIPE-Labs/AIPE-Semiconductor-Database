@@ -4,7 +4,7 @@
 
 Reads the data only through ``aipe_devices.api.Database`` (the same queries as the MCP
 server) and writes only to ``--out``: ``data/summary.json``, ``data/sources.json``,
-``data/devices.json`` and one ``data/devices/<device_id>.json`` per device, plus the
+``data/devices.json``, ``data/contributions.json`` and one ``data/devices/<device_id>.json`` per device, plus the
 frontend from ``site/``. It never modifies ``data/``, downloads nothing and performs no
 fitting, interpolation or derivation. Every device file carries its sources and their
 rights status, which the page shows.
@@ -38,8 +38,8 @@ def _write(path: Path, payload) -> None:
     path.write_text(text, encoding="utf-8")
 
 
-def build(out: Path, data: Path | None = None) -> dict:
-    database = Database(data or ROOT / "data")
+def build(out: Path, data: Path | None = None, contributed: Path | None = None) -> dict:
+    database = Database(data or ROOT / "data", contributed=contributed)
     if out.exists():
         shutil.rmtree(out)
     shutil.copytree(ROOT / "site", out, ignore=shutil.ignore_patterns("README.md"))
@@ -53,6 +53,10 @@ def build(out: Path, data: Path | None = None) -> dict:
     _write(out / "data/summary.json", summary)
     _write(out / "data/sources.json", database.list_sources())
     _write(out / "data/devices.json", devices)
+    _write(
+        out / "data/contributions.json",
+        [database.get_contribution(c["contribution_id"]) for c in database.list_contributions()],
+    )
     for item in devices:
         device = database.export_device(item["device_id"])
         folder = COLLECTIONS[device["collection"]][0]
@@ -65,8 +69,11 @@ def build(out: Path, data: Path | None = None) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, default=ROOT / "_site")
+    parser.add_argument(
+        "--contributed", type=Path, help="Preview only: read contributions from this directory"
+    )
     args = parser.parse_args()
-    print(json.dumps(build(args.out)))
+    print(json.dumps(build(args.out, contributed=args.contributed)))
     return 0
 
 

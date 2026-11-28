@@ -137,7 +137,9 @@
         '<div class="grid-2"><div class="card"><h2>For people</h2><p>Browse the <a href="#/devices">devices</a>, open a device to see its conduction and switching-loss tables, ' +
         "thermal network and datasheet values, and follow each value back to its original file or datasheet.</p></div>" +
         '<div class="card"><h2>For AI agents</h2><p>The same records are served by a local, read-only MCP server with plugins for Claude Code and Codex. ' +
-        '<a href="' + REPO + '/blob/main/docs/agents.md">Setup and tools</a>.</p></div></div>';
+        '<a href="' + REPO + '/blob/main/docs/agents.md">Setup and tools</a>.</p></div></div>' +
+        '<div class="card"><h2>Have measured data?</h2><p>The database holds no laboratory measurement yet. Laboratories, companies and manufacturers can ' +
+        '<a href="#/contribute">contribute data</a> under an open licence; every contribution keeps its contributor, licence and review status.</p></div>';
       document.getElementById("go").addEventListener("submit", function (e) {
         e.preventDefault();
         location.hash = "#/devices?q=" + encodeURIComponent(document.getElementById("q").value.trim());
@@ -298,12 +300,53 @@
     });
   }
 
+  var STATUS = {
+    submitted: ["Submitted", "warn", "Received; it does not pass the automatic checks yet."],
+    validated: ["Validated by automatic checks", "der", "Format, licence and file checksums pass. No person has confirmed the values."],
+    reviewed: ["Reviewed by a maintainer", "exp", "A named maintainer has looked at it; the review says what was checked."]
+  };
+  function statusBadge(s) { var d = STATUS[s] || [s, "warn", ""]; return '<span class="badge ' + d[1] + '" title="' + esc(d[2]) + '">' + esc(d[0]) + "</span>"; }
+
+  function contribute() {
+    return load("data/contributions.json").then(function (list) {
+      app.innerHTML = "<h1>Contribute data</h1>" +
+        '<p class="lead">Universities, companies, test laboratories, individuals and device manufacturers can contribute data they have measured, ' +
+        "or, for a manufacturer, their own data. The database holds no laboratory measurement yet, so any measurement of a listed device is new.</p>" +
+        '<div class="grid-2"><div class="card"><h2>Without git</h2><p>Upload your files to an archive that gives them a DOI, for example Zenodo, then fill in a form with the link, ' +
+        'the device, the test setup and the licence. A maintainer builds the data package and asks you to confirm it.</p><p><a class="btn-pill" href="' + REPO +
+        '/issues/new?template=contribute-data.yml">Open the form</a></p></div>' +
+        '<div class="card"><h2>With a pull request</h2><p>Add a data package directory and let the automatic checks validate it. A complete example with synthetic numbers is in the repository.</p>' +
+        '<p><a class="btn-pill" href="' + REPO + '/blob/main/CONTRIBUTING.md">Read the guide</a></p></div></div>' +
+        "<h2>What a contribution states</h2><ul><li>Who you are, and that you have the right to share the data.</li>" +
+        "<li>The licence: CC BY 4.0 by default, or CC0. Without a licence nothing is merged.</li>" +
+        "<li>The device down to the level you know it: part, lot, sample.</li><li>The test setup and instruments.</li>" +
+        "<li>The operating conditions of every value, and the uncertainty where known.</li><li>The original files. Missing values stay missing.</li></ul>" +
+        "<h2>What the status means</h2><div class=\"table-wrap\"><table><tbody>" + ["submitted", "validated", "reviewed"].map(function (k) {
+          return "<tr><td>" + statusBadge(k) + "</td><td>" + esc(STATUS[k][2]) + "</td></tr>"; }).join("") + "</tbody></table></div>" +
+        '<p class="small">Manufacturers can also state the terms for model files already in the database, or ask for correction or removal: <a href="' + REPO +
+        '/issues/new?template=grant-rights.yml">rights form</a>. Which measurements are most wanted: <a href="' + REPO + '/blob/main/docs/wanted-measurements.md">list</a>.</p>' +
+        "<h2>Contributed data</h2>" + (list.length ? list.map(function (c) {
+          return '<div class="card"><h3>' + esc(c.title) + '</h3><p class="head-meta">' + statusBadge(c.contribution_status) + " " + badge(c.data_class) + "</p>" +
+            '<p class="small">' + esc(c.device.manufacturer) + " " + esc(c.device.part_number) + " · identity known to " + esc(c.device.identity_level) + " level · contributed by " +
+            esc(c.contributor.name) + (c.contributor.affiliation ? ", " + esc(c.contributor.affiliation) : "") + ' · licence <a href="' + esc(c.rights.license_url) + '">' + esc(c.rights.license) + "</a>" +
+            (c.rights.attribution ? ' · credit as "' + esc(c.rights.attribution) + '"' : "") + " · " + c.original_files + " original file(s) archived" +
+            (c.review ? " · reviewed by " + esc(c.review.reviewer) + " on " + esc(c.review.reviewed_on) + ": " + esc(c.review.scope) : "") + "</p>" +
+            '<p class="small muted">' + esc(c.setup) + '</p><div class="table-wrap"><table><thead><tr><th>Quantity</th><th class="num">Value</th><th class="num">Uncertainty (standard)</th><th>Conditions</th><th>Sample</th></tr></thead><tbody>' +
+            c.values.map(function (v) {
+              return "<tr><td>" + esc(QTY[v.name] || v.name) + '</td><td class="num">' + esc(shown(v.value, v.unit)) + '</td><td class="num">' +
+                (v.uncertainty && v.uncertainty.standard !== null ? esc(shown(v.uncertainty.standard, v.unit)) : '<span class="na">not stated</span>') +
+                '</td><td class="cond">' + conditionText(v.condition) + "</td><td>" + (v.physical_sample_id ? esc(v.physical_sample_id) : '<span class="na">not stated</span>') + "</td></tr>";
+            }).join("") + "</tbody></table></div></div>";
+        }).join("") : '<div class="notice info"><strong>Nothing has been contributed yet.</strong> The first accepted contribution will be listed here with its status, licence and contributor.</div>');
+    });
+  }
+
   // -- router -----------------------------------------------------------------------------------------------
   function route() {
     var hash = location.hash.replace(/^#\/?/, ""), parts = hash.split("?"), path = parts[0].split("/"), params = {};
     (parts[1] || "").split("&").forEach(function (kv) { var p = kv.split("="); if (p[0]) params[p[0]] = decodeURIComponent(p[1] || ""); });
     var name = path[0] || "overview";
-    var view = name === "devices" ? devices(params) : name === "device" ? device(decodeURIComponent(path[1] || "")) : name === "sources" ? sources() : overview();
+    var view = name === "devices" ? devices(params) : name === "device" ? device(decodeURIComponent(path[1] || "")) : name === "sources" ? sources() : name === "contribute" ? contribute() : overview();
     document.querySelectorAll("[data-nav]").forEach(function (a) {
       if (a.getAttribute("data-nav") === (name === "device" ? "devices" : name)) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
     });
