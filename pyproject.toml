@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aipe-devices"
-version = "3.1.0"
+version = "3.2.0"
 description = "Canonical power semiconductor data and evidence infrastructure"
 readme = "README.md"
 # Code: MIT (LICENSE). The wheel bundles no dataset; data rights are described in LICENSING.md.

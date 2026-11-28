@@ -1,6 +1,6 @@
 {
   "name": "aipe-semiconductor-database",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "Power semiconductor data expert: device model tables and datasheet transcriptions with unit, conditions, source and rights status, served read-only by the aipe-devices Python package through its local MCP server.",
   "author": {
     "name": "Fulong Li",
