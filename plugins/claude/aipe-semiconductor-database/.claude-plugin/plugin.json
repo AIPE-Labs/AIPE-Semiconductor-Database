@@ -1,6 +1,6 @@
 {
   "name": "aipe-semiconductor-database",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "Power semiconductor data expert: SiC device model tables (conduction, switching loss, thermal networks) and datasheet transcriptions with unit, operating conditions, source and rights status for every value, served read-only by the aipe-devices Python package through its local MCP server (no LLM arithmetic, no cloud services, no API keys).",
   "author": {
     "name": "Fulong Li",

@@ -8,7 +8,7 @@
       "name": "aipe-semiconductor-database",
       "source": "./plugins/codex/aipe-semiconductor-database",
       "description": "Power semiconductor device data lookup with unit, conditions, source and rights status for every value, backed by the aipe-devices package and its local read-only MCP server.",
-      "version": "3.1.0",
+      "version": "3.2.0",
       "category": "Engineering",
       "policy": {
         "installation": "AVAILABLE",

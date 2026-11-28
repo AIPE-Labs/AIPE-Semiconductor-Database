@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "AIPE Semiconductor Database: power semiconductor device data with provenance and rights status for Claude Code and Codex.",
-    "version": "3.1.0"
+    "version": "3.2.0"
   },
   "plugins": [
     {
       "name": "aipe-semiconductor-database",
       "source": "./plugins/claude/aipe-semiconductor-database",
       "description": "Power semiconductor device data lookup with unit, conditions, source and rights status for every value, backed by the aipe-devices package and its local read-only MCP server.",
-      "version": "3.1.0",
+      "version": "3.2.0",
       "category": "engineering",
       "tags": ["power-semiconductors", "power-electronics", "sic", "dataset", "mcp"]
     }

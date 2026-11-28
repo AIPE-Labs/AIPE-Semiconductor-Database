@@ -82,7 +82,7 @@ validated, reviewed). See [CONTRIBUTING.md](CONTRIBUTING.md) and the
 
 ## Project Information
 
-- Version: 3.1.0 (`pyproject.toml`, package `aipe-devices`; domain schema 3.0.0)
+- Version: 3.2.0 (`pyproject.toml`, package `aipe-devices`; domain schema 3.0.0)
 - Status: Alpha (`aipe.yaml`: status `active`, maturity `usable`; no measured evidence backs any loss
   result)
 - Developer: Fulong Li

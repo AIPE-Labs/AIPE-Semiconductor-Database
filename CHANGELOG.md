@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## 3.2.0 — Graduation: licence, agent and people entry points, contribution window (2026-11-28)
+
+No change to the domain schema (3.0.0) or to any data file. Nothing in the existing Python API is removed.
 
 - MIT `LICENSE` for the code, declared in `pyproject.toml` and `aipe.yaml`; `LICENSING.md` rewritten (code MIT,
   manufacturer data rights not established and not relicensed, AIPE's own data layer CC BY 4.0). Repository and
