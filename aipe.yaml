@@ -18,7 +18,9 @@
     "semiconductor-loss-evaluation",
     "semiconductor-dab-screening",
     "semiconductor-measurement-requests",
-    "candidate-device-import"
+    "candidate-device-import",
+    "semiconductor-mcp-server",
+    "semiconductor-agent-plugin"
   ],
   "inputs": [
     {
@@ -88,13 +90,15 @@
         "dab-loss-evaluation",
         "dab-device-screening",
         "measurement-request-generation",
-        "candidate-device-import"
+        "candidate-device-import",
+        "semiconductor-mcp-server"
       ],
       "licence_class": "open_source",
       "optional": false,
       "interfaces": [
         "cli",
-        "python"
+        "python",
+        "mcp"
       ],
       "platforms": [
         "linux",
@@ -105,6 +109,69 @@
       "limitations": [
         "Physical models require separate validation.",
         "Loss evaluation uses manufacturer model/datasheet data; no measured evidence backs it."
+      ]
+    },
+    {
+      "id": "mcp-python-sdk",
+      "name": "Model Context Protocol Python SDK",
+      "capabilities": [
+        "semiconductor-mcp-server"
+      ],
+      "licence_class": "open_source",
+      "optional": true,
+      "interfaces": [
+        "mcp"
+      ],
+      "platforms": [
+        "linux",
+        "windows",
+        "macos"
+      ],
+      "url": "https://github.com/modelcontextprotocol/python-sdk",
+      "limitations": [
+        "Local stdio transport only; read-only tools; needs a checkout of the repository for the data."
+      ]
+    },
+    {
+      "id": "claude-code",
+      "name": "Claude Code",
+      "capabilities": [
+        "semiconductor-agent-plugin"
+      ],
+      "licence_class": "commercial",
+      "optional": true,
+      "interfaces": [
+        "mcp"
+      ],
+      "platforms": [
+        "linux",
+        "windows",
+        "macos"
+      ],
+      "url": "https://claude.com/claude-code",
+      "limitations": [
+        "Optional agent host; the plugin only starts the local MCP server and adds a lookup skill."
+      ]
+    },
+    {
+      "id": "codex",
+      "name": "Codex",
+      "capabilities": [
+        "semiconductor-agent-plugin"
+      ],
+      "licence_class": "commercial",
+      "optional": true,
+      "interfaces": [
+        "mcp"
+      ],
+      "platforms": [
+        "linux",
+        "windows",
+        "macos"
+      ],
+      "url": "https://developers.openai.com/codex",
+      "limitations": [
+        "Optional agent host; the plugin only starts the local MCP server and adds a lookup skill."
       ]
     },
     {
@@ -150,7 +217,28 @@
       ]
     }
   ],
-  "connectors": [],
+  "connectors": [
+    {
+      "id": "aipe-semiconductor-database-mcp",
+      "tool": "mcp-python-sdk",
+      "type": "mcp",
+      "repository": "https://github.com/AIPE-Labs/AIPE-Semiconductor-Database",
+      "license": "MIT",
+      "status": "experimental",
+      "supported_versions": [
+        "mcp>=2,<3"
+      ],
+      "platforms": [
+        "linux",
+        "windows",
+        "macos"
+      ],
+      "security_notes": [
+        "Local stdio transport; no network listener, no API keys, no cloud services.",
+        "Read-only tools; the server never writes files or executes repository content."
+      ]
+    }
+  ],
   "validation": {
     "status": "tested",
     "evidence": [
@@ -164,6 +252,7 @@
       "tests/unit/test_measurement_requests.py",
       "tests/integration/test_dab_cli.py",
       "tests/integration/test_dab_examples.py",
+      "tests/integration/test_agent_entry_point.py",
       ".github/workflows/tests.yml"
     ],
     "limitations": [
@@ -179,6 +268,7 @@
     "docs/dab-loss-screening.md",
     "docs/core-integration.md",
     "docs/architecture.md",
+    "docs/agents.md",
     "LICENSING.md",
     "data/candidates/README.md"
   ]

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "aipe-semiconductor-database": {
+      "command": "python",
+      "args": ["-m", "aipe_devices.mcp.server"]
+    }
+  }
+}
