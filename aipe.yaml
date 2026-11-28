@@ -20,7 +20,8 @@
     "semiconductor-measurement-requests",
     "candidate-device-import",
     "semiconductor-mcp-server",
-    "semiconductor-agent-plugin"
+    "semiconductor-agent-plugin",
+    "semiconductor-data-contribution"
   ],
   "inputs": [
     {
@@ -91,7 +92,8 @@
         "dab-device-screening",
         "measurement-request-generation",
         "candidate-device-import",
-        "semiconductor-mcp-server"
+        "semiconductor-mcp-server",
+        "semiconductor-data-contribution"
       ],
       "licence_class": "open_source",
       "optional": false,
@@ -254,6 +256,7 @@
       "tests/integration/test_dab_examples.py",
       "tests/integration/test_agent_entry_point.py",
       "tests/integration/test_build_site.py",
+      "tests/integration/test_contribution.py",
       ".github/workflows/tests.yml"
     ],
     "limitations": [
@@ -271,6 +274,7 @@
     "docs/architecture.md",
     "docs/agents.md",
     "site/README.md",
+    "CONTRIBUTING.md",
     "LICENSING.md",
     "data/candidates/README.md"
   ]

@@ -16,6 +16,13 @@ jobs:
       - run: ruff format --check src tests scripts examples
       - run: pytest -q
       - run: python examples/device_explorer_demo.py
+      - name: Contributed data packages pass the acceptance rules
+        run: |
+          shopt -s nullglob
+          dirs=(data/contributed/*/)
+          if [ ${#dirs[@]} -gt 0 ]; then aipe-devices validate-contribution "${dirs[@]}"; fi
+          aipe-devices validate-contribution --allow-synthetic examples/contribution/*/
+      - run: python scripts/generate_wanted.py --check
       - run: python -m build
       - name: Check Core projections against AIPE-Core v0.1.0
         run: |

@@ -68,6 +68,13 @@ def main(argv=None):
     importer.add_argument("--report", type=Path, required=True)
     validator = commands.add_parser("validate-package")
     validator.add_argument("manifest", type=Path)
+    contribution = commands.add_parser(
+        "validate-contribution", help="Check contributed data packages (directories)"
+    )
+    contribution.add_argument("directories", type=Path, nargs="*")
+    contribution.add_argument(
+        "--allow-synthetic", action="store_true", help="Accept format examples (examples/ only)"
+    )
     migration = commands.add_parser("migrate-legacy")
     migration.add_argument("version", choices=["v1", "v2"])
     migration.add_argument("source", type=Path)
@@ -111,6 +118,19 @@ def main(argv=None):
         report = validate_package_file(args.manifest)
         print(report.model_dump_json(indent=2))
         raise SystemExit(0 if report.valid else 1)
+    elif args.command == "validate-contribution":
+        from aipe_devices.contribution import validate_contribution
+
+        reports = {
+            str(d): validate_contribution(d, allow_synthetic=args.allow_synthetic)
+            for d in args.directories
+        }
+        print(
+            json.dumps(
+                {k: v.model_dump(mode="json")["issues"] for k, v in reports.items()}, indent=2
+            )
+        )
+        raise SystemExit(0 if all(r.valid for r in reports.values()) else 1)
     elif args.command == "migrate-legacy":
         from aipe_devices.migration.v1_to_v3 import load as load_v1
         from aipe_devices.migration.v2_to_v3 import load as load_v2

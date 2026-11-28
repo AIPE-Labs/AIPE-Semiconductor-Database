@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: How to contribute data
+    url: https://github.com/AIPE-Labs/AIPE-Semiconductor-Database/blob/main/CONTRIBUTING.md
+    about: The two ways in, what a contribution must state, and what happens after you submit.

@@ -72,6 +72,14 @@ setup are described in [docs/agents.md](docs/agents.md).
 Export, PLECS import, legacy migration, library import, the Device Explorer and the DAB loss-evaluation
 commands are described in [docs/usage.md](docs/usage.md).
 
+## Contributing data
+
+The database holds no laboratory measurement yet. Universities, companies, laboratories and device manufacturers can
+contribute measured data under CC BY 4.0 or CC0, by a form with a DOI link (no git needed) or by a pull request with
+a data package. Every contribution keeps its contributor, licence, original files and a status (submitted,
+validated, reviewed). See [CONTRIBUTING.md](CONTRIBUTING.md) and the
+[wanted measurements](docs/wanted-measurements.md).
+
 ## Project Information
 
 - Version: 3.1.0 (`pyproject.toml`, package `aipe-devices`; domain schema 3.0.0)
@@ -97,4 +105,6 @@ commands are described in [docs/usage.md](docs/usage.md).
   [Measurement partner interface](docs/measurement.md) · [Migration](docs/migration.md)
 - [JSON Schemas](docs/schemas/) · [Candidate records](data/candidates/README.md) · [Audit](docs/audit.md) ·
   [Refactor report](docs/refactor-report.md)
+- [Contributing data](CONTRIBUTING.md) · [Wanted measurements](docs/wanted-measurements.md) ·
+  [Intended dataset layout](docs/dataset-layout.md)
 - [CHANGELOG.md](CHANGELOG.md) · [LICENSING.md](LICENSING.md) · [Capability manifest](aipe.yaml)

@@ -37,6 +37,8 @@ under `plugins/` are kept identical by `python scripts/sync_plugin_skills.py` (C
 | `get_device` | Identity, sources, review status, every record (values with conditions, curves with axes), groups without data |
 | `get_values` | Stored values of one record; for a curve, grid points filtered with `where` |
 | `provenance` | Source file and SHA-256 or datasheet locator, data class, lifecycle, review status, flags, rights |
+| `list_contributions` | Contributed data with contributor, licence and `contribution_status` |
+| `get_contribution` | One contribution: device identity to lot and sample, setup, original files, every value with conditions, uncertainty and instruments |
 
 Filter values need a unit: `where={"junction_temperature": "25 degC..150 degC", "dc_bus_voltage": "800 V"}`.
 Bare numbers, unknown axes and misspelled tool arguments are refused.
@@ -58,6 +60,20 @@ Bare numbers, unknown axes and misspelled tool arguments are refused.
 Model tables from simulation files contain guard points outside the operating range. `get_values` leaves out
 rows at or above 773.15 K (the threshold used by the interpolation service) and reports how many in
 `guard_rows_excluded`; `include_guard_rows=true` returns them.
+
+## Contributed data
+
+Data contributed by laboratories, manufacturers and individuals ([CONTRIBUTING.md](../CONTRIBUTING.md)) are a class of
+their own (`collection: contributed`). They are never merged into the manufacturer records; `get_device` lists the
+contributions for the same part under `contributions`. Each carries:
+
+| `contribution_status` | Meaning |
+| --- | --- |
+| `submitted` | Received; it does not pass the automatic checks yet |
+| `validated` | Format, licence, declaration and file checksums pass. No person has confirmed the values |
+| `reviewed` | A named maintainer has looked at it; `review.scope` says what was checked |
+
+Their rights status is `open_licence` (CC BY 4.0 or CC0); CC BY data must be credited with `rights.attribution`.
 
 ## Python
 

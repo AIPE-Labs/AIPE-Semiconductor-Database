@@ -1,0 +1,33 @@
+{
+  "schema": "aipe-contribution/0.1",
+  "id": "example-synthetic-dpt",
+  "title": "Synthetic double-pulse example (format demonstration, not real data)",
+  "submitted_on": "2026-11-28",
+  "contributor": {
+    "name": "A. Example",
+    "affiliation": "Example University Power Electronics Laboratory",
+    "kind": "university",
+    "contact": "https://orcid.org/0000-0000-0000-0000"
+  },
+  "rights": {
+    "holder": "Example University Power Electronics Laboratory",
+    "license": "CC-BY-4.0",
+    "declaration": "I have the right to share these data and I release them under the licence named in this contribution.",
+    "attribution": "Example University Power Electronics Laboratory, synthetic double-pulse example, 2026"
+  },
+  "device": {
+    "manufacturer": "Example Semiconductor",
+    "part_number": "EXAMPLE-SIC-1200",
+    "production_lot_id": null,
+    "physical_sample_ids": [
+      "EX-S01"
+    ],
+    "date_code": null,
+    "identity_level": "sample"
+  },
+  "setup": "Double-pulse test on a half-bridge board with a 100 uH air-core load inductor; drain current through a 10 mOhm coaxial shunt; five repetitions per point. All numbers in this example are synthetic.",
+  "package": "manifest.json",
+  "deposit": null,
+  "synthetic_example": true,
+  "review": null
+}

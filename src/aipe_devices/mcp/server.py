@@ -31,6 +31,8 @@ INSTRUCTIONS = (
     "one), its data_class (manufacturer_model = simulation model table, manufacturer_datasheet "
     "= datasheet transcription, measured = laboratory measurement), its source and its rights "
     "status. Today no record is a measurement and no record has been reviewed by a person. "
+    "Contributed data are a class of their own: always report their contribution_status, and "
+    "never call data 'reviewed' unless that status says so; attribute CC BY data as stated. "
     "Rights status 'not_established' means the owner has given no licence: use the value for "
     "engineering work and cite the source, do not republish it as data. Report only values "
     "present in tool results; never interpolate, extrapolate or fill a missing value. Give "
@@ -168,6 +170,31 @@ def build_server(database: Database | None = None):
     )
     def provenance(device: str, record_id: str | None = None) -> dict[str, Any]:
         return run("provenance", device, record_id)
+
+    @server.tool(
+        name="list_contributions",
+        title="List contributed data",
+        annotations=ro,
+        description="Data contributed by laboratories, manufacturers and individuals under "
+        "CC BY 4.0 or CC0, with contribution_status: submitted (not yet passing the "
+        "checks), validated (automatic checks pass; no person has confirmed the values) or "
+        "reviewed (a named maintainer has looked at it).",
+    )
+    def list_contributions(
+        query: str | None = None, status: str | None = None
+    ) -> list[dict[str, Any]]:
+        return run("list_contributions", query=query, status=status)
+
+    @server.tool(
+        name="get_contribution",
+        title="Get contributed data",
+        annotations=ro,
+        description="One contribution: contributor, licence and attribution, device identity "
+        "down to lot and sample, test setup, original files with SHA-256, and every value "
+        "with unit, conditions, uncertainty, sample and instruments.",
+    )
+    def get_contribution(contribution_id: str) -> dict[str, Any]:
+        return run("get_contribution", contribution_id)
 
     return server
 

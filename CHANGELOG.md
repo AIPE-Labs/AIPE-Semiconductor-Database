@@ -15,6 +15,13 @@
   states the source of the data and that its redistribution rights are not established. The GitHub Pages workflow
   is manual only.
 
+- Contribution window: `aipe_devices.contribution` (declaration model, acceptance rules, status), CLI
+  `aipe-devices validate-contribution`, `data/contributed/`, a synthetic format example, issue forms for data
+  contributions and for rights holders, `CONTRIBUTING.md`, `docs/wanted-measurements.md` (generated) and
+  `docs/dataset-layout.md` (intention only; nothing is published). Contributed data are served by the API, the MCP
+  tools `list_contributions` / `get_contribution` and the explorer with their status: submitted, validated, reviewed.
+- `docs/conventions-comparison.md`: conventions compared with AIPE-Core 0.1.0 and the magnetics schema v0.2.
+
 ## 3.1.0 — DAB loss evaluation, screening and measurement requests
 
 - Python 3.10 support: `StrEnum` backport in `schema/enums.py`, `requires-python >= 3.10`,

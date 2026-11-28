@@ -70,6 +70,18 @@ def test_frontend_is_self_contained_and_states_the_rights(site):
     }
 
 
+def test_contributions_page_data(site, tmp_path):
+    assert read(site, "contributions.json") == []
+    spec = importlib.util.spec_from_file_location("build_site", ROOT / "scripts/build_site.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    module.build(tmp_path / "preview", contributed=ROOT / "examples/contribution")
+    (item,) = json.loads((tmp_path / "preview/data/contributions.json").read_text())
+    assert item["contribution_status"] == "validated" and item["rights"]["license"] == "CC-BY-4.0"
+    script = (site / "assets/app.js").read_text(encoding="utf-8")
+    assert "No person has confirmed the values" in script
+
+
 def test_pages_workflow_is_manual_only():
     text = (ROOT / ".github/workflows/pages.yml").read_text(encoding="utf-8")
     trigger = text.split("permissions:")[0]

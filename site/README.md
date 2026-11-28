@@ -14,6 +14,7 @@ The data are generated, never edited by hand. `scripts/build_site.py` reads the 
 | `data/summary.json` | counts per collection and data class, measured and reviewed counts, build commit |
 | `data/sources.json` | data owners with rights status and number of archived original files |
 | `data/devices.json` | index for client-side search |
+| `data/contributions.json` | contributed data with contributor, licence, status and values (empty until the first contribution) |
 | `data/devices/<device_id>.json` | identity, sources with rights, every record in full (loaded on demand) |
 
 What every device page states:

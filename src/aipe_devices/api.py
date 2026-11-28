@@ -13,6 +13,12 @@ from itertools import product
 from pathlib import Path
 
 from aipe_devices import __version__
+from aipe_devices.contribution import (
+    LICENCES,
+    contribution_status,
+    load_contribution,
+    validate_contribution,
+)
 from aipe_devices.domain.device import CHARACTERISTICS
 from aipe_devices.normalizers.units import normalize
 from aipe_devices.services.interpolation import GUARD_TEMPERATURE_K
@@ -36,6 +42,15 @@ RIGHTS_NOTE = (
     "no licence. Use the value for your own engineering work and cite the source; do not "
     "republish it as a dataset."
 )
+
+
+CONTRIBUTED = "contributed"
+STATUS_MEANING = {
+    "submitted": "Received; it does not pass the automatic checks yet.",
+    "validated": "Passes the automatic checks (format, licence, checksums). No person has "
+    "confirmed the values.",
+    "reviewed": "A named maintainer has looked at it; see the review for what was checked.",
+}
 
 
 class QueryError(ValueError):
@@ -135,8 +150,120 @@ def _source(source: dict) -> dict:
 class Database:
     """In-memory index of the JSON records under one data root. Read-only."""
 
-    def __init__(self, root: str | Path | None = None):
+    def __init__(self, root: str | Path | None = None, contributed: str | Path | None = None):
         self.root = Path(root) if root is not None else default_data_root()
+        self.contributed = Path(contributed) if contributed else self.root / CONTRIBUTED
+
+    # -- contributed data -----------------------------------------------------------------
+
+    @cached_property
+    def _contributions(self) -> dict[str, dict]:
+        out = {}
+        if not self.contributed.is_dir():
+            return out
+        for directory in sorted(p for p in self.contributed.iterdir() if p.is_dir()):
+            report = validate_contribution(directory, allow_synthetic=True)
+            try:
+                contribution, package = load_contribution(directory)
+            except (ValueError, OSError):
+                continue  # unreadable: CI rejects it; nothing is served from it
+            out[contribution.id] = {
+                "contribution": contribution,
+                "package": package,
+                "status": contribution_status(contribution, accepted=report.valid),
+                "issues": [i.model_dump(mode="json") for i in report.issues],
+            }
+        return out
+
+    def _contribution_header(self, entry: dict) -> dict:
+        c = entry["contribution"]
+        return {
+            "contribution_id": c.id,
+            "title": c.title,
+            "data_class": "synthetic" if c.synthetic_example else "measured",
+            "collection": CONTRIBUTED,
+            "contribution_status": entry["status"],
+            "contribution_status_meaning": STATUS_MEANING[entry["status"]],
+            "review": c.review.model_dump(mode="json") if c.review else None,
+            "submitted_on": c.submitted_on.isoformat(),
+            "contributor": c.contributor.model_dump(mode="json"),
+            "device": c.device.model_dump(mode="json"),
+            "rights": {
+                "status": "open_licence",
+                "owner": c.rights.holder,
+                "license": c.rights.license,
+                "license_url": LICENCES[c.rights.license],
+                "redistribution_allowed": True,
+                "commercial_use_allowed": True,
+                "attribution": c.rights.attribution,
+                "note": None,
+            },
+            "original_files": len(entry["package"].artifacts)
+            + (len(c.deposit.files) if c.deposit else 0),
+            "deposit": c.deposit.doi_url if c.deposit else None,
+        }
+
+    def list_contributions(self, query: str | None = None, status: str | None = None) -> list[dict]:
+        out = []
+        for entry in self._contributions.values():
+            header = self._contribution_header(entry)
+            text = " ".join(
+                [header["title"], header["device"]["manufacturer"], header["device"]["part_number"]]
+            ).casefold()
+            if (query and query.casefold() not in text) or (
+                status and status != header["contribution_status"]
+            ):
+                continue
+            out.append(header)
+        return out
+
+    def get_contribution(self, contribution_id: str) -> dict:
+        entry = self._contributions.get(contribution_id)
+        if entry is None:
+            raise QueryError(
+                "not_found",
+                f"No contribution '{contribution_id}'. list_contributions shows what exists.",
+            )
+        package = entry["package"]
+        out = self._contribution_header(entry)
+        out["setup"] = entry["contribution"].setup
+        out["validation_issues"] = entry["issues"]
+        out["files"] = [
+            {"file": a.uri, "sha256": a.checksum, "size": a.size} for a in package.artifacts
+        ]
+        out["values"] = []
+        for run in package.runs:
+            records = [*run.results, *(m for g in run.derived_metrics for m in g.metrics)]
+            setup = run.instrument_setup
+            probes = (setup.voltage_probe, setup.current_probe, setup.gate_probe)
+            instruments = [
+                {"role": i.role, "manufacturer": i.manufacturer, "model": i.model}
+                for i in (*setup.instruments, *(p for p in probes if p))
+            ]
+            for record in records:
+                condition = _condition(run.condition.model_dump(mode="json")) | _condition(
+                    record.condition.model_dump(mode="json")
+                )
+                out["values"].append(
+                    {
+                        "record_id": record.id,
+                        "name": record.name,
+                        "value": record.quantity.value,
+                        "unit": record.quantity.unit,
+                        "condition": condition,
+                        "statistic": str(record.statistic),
+                        "uncertainty": record.uncertainty.model_dump(mode="json")
+                        if record.uncertainty
+                        else None,
+                        "data_class": str(record.provenance.origin),
+                        "run_id": run.id,
+                        "protocol": run.protocol.category,
+                        "physical_sample_id": run.physical_sample_id,
+                        "production_lot_id": run.production_lot_id,
+                        "instruments": instruments,
+                    }
+                )
+        return out
 
     @cached_property
     def _devices(self) -> dict[str, tuple[str, dict]]:
@@ -262,8 +389,23 @@ class Database:
             "package_version": __version__,
             "domain_schema": "3.0.0",
             "collections": collections,
+            "contributed": {
+                "description": "Data contributed by laboratories, manufacturers and "
+                "individuals under an open licence. A data class of its own, with a "
+                "contribution status.",
+                "contributions": len(self._contributions),
+                "by_status": {
+                    status: sum(e["status"] == status for e in self._contributions.values())
+                    for status in STATUS_MEANING
+                },
+            },
             "measured_records": sum(
                 c["records_by_data_class"].get("measured", 0) for c in collections.values()
+            )
+            + sum(
+                v["data_class"] == "measured"
+                for cid in self._contributions
+                for v in self.get_contribution(cid)["values"]
             ),
             "rights": (
                 "Code is MIT. " + RIGHTS_NOTE + " This applies to every record whose rights "
@@ -362,6 +504,14 @@ class Database:
             "quality_flags": data["quality"]["flags"],
             "sources": [_source(source) for source in data["provenance"]],
             "records": records,
+            "contributions": [
+                {k: c[k] for k in ("contribution_id", "title", "contribution_status", "data_class")}
+                for c in self.list_contributions()
+                if c["device"]["part_number"].casefold()
+                == data["identity"]["part_number"].casefold()
+                and c["device"]["manufacturer"].casefold()
+                == data["identity"]["manufacturer"].casefold()
+            ],
             "groups_without_data": [
                 g for g in ("ratings", *CHARACTERISTICS, "thermal") if g not in present
             ],

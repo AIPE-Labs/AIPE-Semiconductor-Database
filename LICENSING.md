@@ -29,6 +29,7 @@ endorsed by it.
 | `data/canonical/` (163 device records normalised from those files) | not established for the values; CC BY 4.0 for AIPE's own layer | Every record names Wolfspeed as owner and is flagged `manufacturer_model_not_measurement`. |
 | `legacy/v1/`, `legacy/v2/` (326 JSON files, earlier conversions of the same Wolfspeed models) | not established | Kept byte-identical as fixtures for the V1/V2 migration tests; not the official corpus. |
 | `data/candidates/` (datasheet transcriptions and candidate records for Wolfspeed, Infineon and other manufacturers' parts) | not established | Individual values transcribed with datasheet URL and locator; no datasheet PDF or vendor model file is stored. Unreviewed, never canonical. |
+| `data/contributed/<id>/` (community contributions; none yet) | CC BY 4.0 or CC0, as declared in each `contribution.json` | The contributor declares the right to share; attribution text is in the declaration. See [CONTRIBUTING.md](CONTRIBUTING.md). |
 | `examples/`, `tests/golden/fixtures/` | MIT | Synthetic or illustrative data written for this repository; not device characterisation. |
 
 Rights holders may request correction or removal of values through an issue on this repository.

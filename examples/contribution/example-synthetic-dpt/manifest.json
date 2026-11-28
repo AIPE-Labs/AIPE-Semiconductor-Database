@@ -1,0 +1,338 @@
+{
+  "schema_version": "3.0.0",
+  "id": "package:example-synthetic-dpt",
+  "request_id": "unsolicited",
+  "device_id": "example_sic_1200v",
+  "sources": [
+    {
+      "id": "source:example-lab",
+      "kind": "laboratory",
+      "name": "Example University Power Electronics Laboratory",
+      "access": {
+        "license": "CC-BY-4.0",
+        "redistribution_allowed": true,
+        "commercial_use_allowed": true,
+        "visibility": "public",
+        "owner": "Example University Power Electronics Laboratory",
+        "category": "partner"
+      }
+    }
+  ],
+  "campaigns": [
+    {
+      "id": "campaign:example-dpt",
+      "name": "Synthetic double-pulse example",
+      "source": {
+        "id": "source:example-lab",
+        "kind": "laboratory",
+        "name": "Example University Power Electronics Laboratory",
+        "access": {
+          "license": "CC-BY-4.0",
+          "redistribution_allowed": true,
+          "commercial_use_allowed": true,
+          "visibility": "public",
+          "owner": "Example University Power Electronics Laboratory",
+          "category": "partner"
+        }
+      },
+      "test_run_ids": [
+        "run:01"
+      ]
+    }
+  ],
+  "runs": [
+    {
+      "id": "run:01",
+      "device_id": "example_sic_1200v",
+      "physical_sample_id": "EX-S01",
+      "production_lot_id": null,
+      "condition": {
+        "junction_temperature": {
+          "value": 298.15,
+          "unit": "K"
+        },
+        "dc_bus_voltage": {
+          "value": 800.0,
+          "unit": "V"
+        },
+        "drain_current": {
+          "value": 20.0,
+          "unit": "A"
+        },
+        "gate_voltage_on": {
+          "value": 15.0,
+          "unit": "V"
+        },
+        "gate_voltage_off": {
+          "value": -4.0,
+          "unit": "V"
+        },
+        "gate_resistance_on": {
+          "value": 2.5,
+          "unit": "Ohm"
+        },
+        "gate_resistance_off": {
+          "value": 2.5,
+          "unit": "Ohm"
+        }
+      },
+      "protocol": {
+        "id": "EXAMPLE-DPT",
+        "version": "1.0",
+        "category": "dpt"
+      },
+      "instrument_setup": {
+        "instruments": [
+          {
+            "id": "scope",
+            "role": "oscilloscope",
+            "manufacturer": "Example Instruments",
+            "model": "EX-4000",
+            "calibration_reference": "EX-CAL-2026-014"
+          }
+        ],
+        "sampling_rate": {
+          "value": 2500000000.0,
+          "unit": "Hz"
+        },
+        "bandwidth": {
+          "value": 1000000000.0,
+          "unit": "Hz"
+        },
+        "voltage_probe": {
+          "id": "vprobe",
+          "role": "drain-source voltage",
+          "manufacturer": "Example Instruments",
+          "model": "EX-HV200"
+        },
+        "current_probe": {
+          "id": "iprobe",
+          "role": "drain current",
+          "manufacturer": "Example Instruments",
+          "model": "EX-SHUNT-10m"
+        },
+        "deskew": {
+          "value": 1.2e-09,
+          "unit": "s"
+        },
+        "load_inductance": {
+          "value": 0.0001,
+          "unit": "H"
+        },
+        "gate_driver": "Example isolated driver, +15 V / -4 V"
+      },
+      "waveform_refs": [
+        {
+          "id": "waveform:run01",
+          "test_run_id": "run:01",
+          "artifact": {
+            "id": "artifact:run01-waveform",
+            "uri": "original/dpt_run01_25C_800V_20A.csv",
+            "checksum": "44b2e207d1f553f496f156e9a5d80596c6662e1b0d71a9571c60941cc99e3230",
+            "format": "text/csv",
+            "size": 48
+          },
+          "stage": "raw",
+          "channels": [
+            {
+              "name": "time_s",
+              "unit": "s",
+              "role": "time"
+            },
+            {
+              "name": "vds_V",
+              "unit": "V",
+              "role": "voltage"
+            },
+            {
+              "name": "id_A",
+              "unit": "A",
+              "role": "current"
+            }
+          ],
+          "provenance": {
+            "origin": "synthetic",
+            "source_ids": [
+              "source:example-lab"
+            ],
+            "lifecycle": "derived",
+            "dependencies": [
+              {
+                "id": "example-generator",
+                "version": "1.0"
+              }
+            ]
+          }
+        }
+      ],
+      "processing_recipes": [
+        {
+          "id": "example-energy-integration",
+          "version": "1.0",
+          "algorithm": "Integral of vds*id over the switching event",
+          "integration_start_rule": "10 % of gate voltage",
+          "integration_end_rule": "drain-source voltage below 10 % of bus voltage"
+        }
+      ],
+      "derived_metrics": [
+        {
+          "id": "metrics:run01",
+          "test_run_id": "run:01",
+          "waveform_ids": [
+            "waveform:run01"
+          ],
+          "recipe": {
+            "id": "example-energy-integration",
+            "version": "1.0",
+            "checksum": null
+          },
+          "metrics": [
+            {
+              "id": "metric:run01-eon",
+              "name": "Eon",
+              "quantity": {
+                "value": 0.00031,
+                "unit": "J"
+              },
+              "provenance": {
+                "origin": "synthetic",
+                "source_ids": [
+                  "source:example-lab"
+                ],
+                "lifecycle": "derived",
+                "dependencies": [
+                  {
+                    "id": "waveform:run01",
+                    "version": "1",
+                    "checksum": "44b2e207d1f553f496f156e9a5d80596c6662e1b0d71a9571c60941cc99e3230"
+                  },
+                  {
+                    "id": "example-energy-integration",
+                    "version": "1.0",
+                    "checksum": null
+                  }
+                ],
+                "recipe_id": "example-energy-integration",
+                "recipe_version": "1.0"
+              },
+              "condition": {
+                "junction_temperature": {
+                  "value": 298.15,
+                  "unit": "K"
+                },
+                "dc_bus_voltage": {
+                  "value": 800.0,
+                  "unit": "V"
+                },
+                "drain_current": {
+                  "value": 20.0,
+                  "unit": "A"
+                },
+                "gate_voltage_on": {
+                  "value": 15.0,
+                  "unit": "V"
+                },
+                "gate_voltage_off": {
+                  "value": -4.0,
+                  "unit": "V"
+                },
+                "gate_resistance_on": {
+                  "value": 2.5,
+                  "unit": "Ohm"
+                },
+                "gate_resistance_off": {
+                  "value": 2.5,
+                  "unit": "Ohm"
+                }
+              },
+              "statistic": "measured_mean",
+              "uncertainty": {
+                "standard": 1.2e-05,
+                "repetitions": 5
+              }
+            },
+            {
+              "id": "metric:run01-eoff",
+              "name": "Eoff",
+              "quantity": {
+                "value": 9e-05,
+                "unit": "J"
+              },
+              "provenance": {
+                "origin": "synthetic",
+                "source_ids": [
+                  "source:example-lab"
+                ],
+                "lifecycle": "derived",
+                "dependencies": [
+                  {
+                    "id": "waveform:run01",
+                    "version": "1",
+                    "checksum": "44b2e207d1f553f496f156e9a5d80596c6662e1b0d71a9571c60941cc99e3230"
+                  },
+                  {
+                    "id": "example-energy-integration",
+                    "version": "1.0",
+                    "checksum": null
+                  }
+                ],
+                "recipe_id": "example-energy-integration",
+                "recipe_version": "1.0"
+              },
+              "condition": {
+                "junction_temperature": {
+                  "value": 298.15,
+                  "unit": "K"
+                },
+                "dc_bus_voltage": {
+                  "value": 800.0,
+                  "unit": "V"
+                },
+                "drain_current": {
+                  "value": 20.0,
+                  "unit": "A"
+                },
+                "gate_voltage_on": {
+                  "value": 15.0,
+                  "unit": "V"
+                },
+                "gate_voltage_off": {
+                  "value": -4.0,
+                  "unit": "V"
+                },
+                "gate_resistance_on": {
+                  "value": 2.5,
+                  "unit": "Ohm"
+                },
+                "gate_resistance_off": {
+                  "value": 2.5,
+                  "unit": "Ohm"
+                }
+              },
+              "statistic": "measured_mean",
+              "uncertainty": {
+                "standard": 6e-06,
+                "repetitions": 5
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "artifact:run01-waveform",
+      "uri": "original/dpt_run01_25C_800V_20A.csv",
+      "checksum": "44b2e207d1f553f496f156e9a5d80596c6662e1b0d71a9571c60941cc99e3230",
+      "format": "text/csv",
+      "size": 48
+    }
+  ],
+  "external_dependencies": [
+    {
+      "id": "example-generator",
+      "version": "1.0"
+    }
+  ]
+}
